@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
 
     void Win()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Final");
     }
 
     void Lose()

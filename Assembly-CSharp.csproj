@@ -79,6 +79,8 @@
     <Compile Include="Assets\Scripts\Tower.cs" />
     <Compile Include="Assets\Scripts\Tunnel.cs" />
     <Compile Include="Assets\Scripts\TunnelCircle.cs" />
+    <Compile Include="Assets\Sprites\final\PlatformerController.cs" />
+    <Compile Include="Assets\Sprites\final\Toilet.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/unity projects/sgj-01/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
