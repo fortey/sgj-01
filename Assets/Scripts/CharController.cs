@@ -17,7 +17,7 @@ public class CharController : MonoBehaviour
     }
 
     public Action<int> ShowHealth;
-    public Action onWin;
+    public Action<string> onWin;
     public Action onLose;
 
     bool inPole { get; set; } = false;
@@ -31,9 +31,21 @@ public class CharController : MonoBehaviour
     float progress = 0f;
     public float TimeToComplete = 3f;
 
+    Vector2 startPosition;
+
+    public AudioSource ASource;
+    public AudioClip DamageSound;
+    public AudioClip Capture;
+
+    public string currentArea;
+    bool isWin = false;
+
+    public GameObject LeftBound;
+    public GameObject Light;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        startPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -48,25 +60,44 @@ public class CharController : MonoBehaviour
         //rb.velocity = Vector2.ClampMagnitude(newVelocity, moveSpeed);
         if (inPole && Input.GetKey(KeyCode.Space))
         {
+            Light.SetActive(true);
+            if (progress == 0)
+            {
+                ASource.PlayOneShot(Capture);
+            }
             progress += Time.deltaTime;
             RefreshProgress();
         }
+        else
+        {
+            Light.SetActive(false);
+        }
         if(progress>1f){
-            onWin();
+            isWin = true;
+            if (currentArea == "cows")
+            {
+                LeftBound.SetActive(false);
+                rb.velocity = Vector2.right * moveSpeed;
+            }
+            onWin(currentArea);
         }
     }
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+        if (!isWin)
+        {
+            rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+        }
     }
 
-    public void EnterPole()
+    public void EnterPole(string areaName)
     {
         inPole = true;
         ProgressBar.SetActive(true);
         progress = 0f;
         RefreshProgress();
+        currentArea = areaName;
     }
 
     public void ExitPole()
@@ -85,11 +116,15 @@ public class CharController : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (isWin) return;
+        ASource.PlayOneShot(DamageSound);
         Health--;
         progress = 0f;
         if (Health == 0)
         {
-            onLose();
+            //onLose();
+            transform.position = startPosition;
+            Health = 3;
         }
     }
 
@@ -98,6 +133,15 @@ public class CharController : MonoBehaviour
         if (!collision.collider.CompareTag("Bullet") && !collision.collider.CompareTag("Bound"))
         {
             TakeDamage();
+        }
+    }
+
+    IEnumerator ExitLevel()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            rb.MovePosition(rb.position + Vector2.right * moveSpeed*Time.fixedDeltaTime);
         }
     }
 

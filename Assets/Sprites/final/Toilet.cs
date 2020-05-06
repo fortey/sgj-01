@@ -44,7 +44,7 @@ public class Toilet : MonoBehaviour
             player.position = Vector2.MoveTowards(player.position, EndPosition.position, 2 * Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log("plll");
+        //Debug.Log("plll");
         Close.SetActive(true);
         Open.SetActive(false);
         StartCoroutine(TheEnd());
@@ -53,6 +53,6 @@ public class Toilet : MonoBehaviour
     IEnumerator TheEnd()
     {
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Titles");
     }
 }

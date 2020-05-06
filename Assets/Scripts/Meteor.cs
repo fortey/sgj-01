@@ -5,6 +5,7 @@ using UnityEngine;
 public class Meteor : MonoBehaviour
 {
     public float Speed = 2f;
+    public float ScaleSpeed = 3f;
     public Transform EndSpot;
     void Start()
     {
@@ -19,9 +20,16 @@ public class Meteor : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void FixedUpdate()
+    {
+        var newScale = transform.localScale;
+        newScale.x += ScaleSpeed * Time.fixedDeltaTime;
+        newScale.y += ScaleSpeed * Time.fixedDeltaTime;
+        transform.localScale = newScale;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    {     
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlateCircleController>().TakeDamage();

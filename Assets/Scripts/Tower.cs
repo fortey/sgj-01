@@ -9,6 +9,10 @@ public class Tower : MonoBehaviour
 
     //Transform plate;
     public GameObject Bullet;
+
+    public AudioSource AudioSource;
+    public AudioClip FireSound;
+
     void Start()
     {
         //plate = GameObject.FindGameObjectWithTag("Player").transform;
@@ -22,6 +26,7 @@ public class Tower : MonoBehaviour
         {
             Instantiate(Bullet, transform.position, Quaternion.identity);
             timeBtwShoots = startTimeBtwShoots;
+            AudioSource.PlayOneShot(FireSound);
         }
         else
         {

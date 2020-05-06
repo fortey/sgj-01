@@ -5,15 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-   // public AudioSource Audio;
+   public AudioSource Audio;
 
     private void Start()
     {
-        //Audio.Play();
+        
     }
     public void OnStartPressed()
     {
-        SceneManager.LoadScene("Level2");
-        
+        Audio.Play();
+        StartCoroutine(LoadAnotherLevel("Level2"));       
+    }
+
+    IEnumerator LoadAnotherLevel(string levelName)
+    {
+        yield return new WaitForSeconds(0.2f);
+        SceneManager.LoadScene(levelName);
     }
 }
